@@ -1,4 +1,5 @@
 import 'package:clothestmatchandroid/CardProvider.dart';
+import 'package:clothestmatchandroid/Settings.dart';
 import 'package:clothestmatchandroid/item_card.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -26,7 +27,7 @@ class InteractiveQueue extends StatefulWidget {
 
 class _InteractiveQueueState extends State<InteractiveQueue>
 {
-  final tabs = [MyHomePage(title: "Home"), InteractiveQueue(title: "Interactive Queue"), Gallery()];
+  final tabs = [MyHomePage(title: "Home"), InteractiveQueue(title: "Interactive Queue"), Gallery(), Settings()];
 
   int currentPageIndex = 1;
 
@@ -35,6 +36,7 @@ class _InteractiveQueueState extends State<InteractiveQueue>
     body: SafeArea(child: Container(alignment: Alignment.center, padding: const EdgeInsets.all(16),
     child: buildCards())),
     bottomNavigationBar: BottomNavigationBar(
+      type: BottomNavigationBarType.fixed,
       items: const [
         BottomNavigationBarItem(
           icon: Icon(Icons.home),
@@ -47,6 +49,10 @@ class _InteractiveQueueState extends State<InteractiveQueue>
         BottomNavigationBarItem(
           icon: Icon(Icons.folder_special),
           label: 'Gallery',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.settings),
+          label: 'Settings',
         ),
       ],
       onTap: (index) {

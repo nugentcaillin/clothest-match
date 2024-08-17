@@ -1,8 +1,11 @@
+import 'package:clothestmatchandroid/Backend_api.dart';
 import 'package:clothestmatchandroid/Gallery.dart';
+import 'package:clothestmatchandroid/Interests.dart';
 import 'package:clothestmatchandroid/interactiveQueue.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'CardProvider.dart';
+import 'Settings.dart';
 
 void main() {
   runApp(const MyApp());
@@ -22,7 +25,7 @@ class MyApp extends StatelessWidget
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(title: 'Clothest Match'),
     ),
   );
 }
@@ -47,9 +50,17 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage>
 {
-  final tabs = [MyHomePage(title: "Home"), InteractiveQueue(title: "Interactive Queue"), Gallery()];
+  final tabs = [MyHomePage(title: "Home"), InteractiveQueue(title: "Interactive Queue"), Gallery(), Settings()];
 
   int currentPageIndex = 0;
+
+  Future _GetProducts() async
+  {
+    BackendApi api = new BackendApi();
+    final a = await api.GetProducts();
+    print(a);
+  }
+
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
@@ -69,8 +80,9 @@ class _MyHomePageState extends State<MyHomePage>
         title: Text(widget.title),
         automaticallyImplyLeading: false
       ),
-
+      body: InterestsFigma(),
       bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
@@ -84,9 +96,14 @@ class _MyHomePageState extends State<MyHomePage>
             icon: Icon(Icons.folder_special),
             label: 'Gallery',
           ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings),
+            label: 'Settings',
+          ),
         ],
         onTap: (index) {
           setState(() {
+            _GetProducts();
             currentPageIndex = index;
             Navigator.push(
               context,
