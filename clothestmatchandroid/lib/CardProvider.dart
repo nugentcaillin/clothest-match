@@ -92,7 +92,16 @@ class CardProvider extends ChangeNotifier
     {
       return CardStatus.like;
     }
+    else if (x <= -delta)
+    {
+      return CardStatus.dislike;
+    }
+    else if (y <= -delta/2)
+    {
+      return CardStatus.checkForInfo;
+    }
 
+    return null;
   }
 
   void like()
@@ -115,7 +124,7 @@ class CardProvider extends ChangeNotifier
 
   void checkInfo()
   {
-
+    resetPosition();
   }
 
   Future _nextCard() async
