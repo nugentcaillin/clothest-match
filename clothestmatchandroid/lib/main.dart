@@ -1,13 +1,14 @@
+import 'package:animations/animations.dart';
 import 'package:clothestmatchandroid/Backend_api.dart';
 import 'package:clothestmatchandroid/Gallery.dart';
-import 'package:clothestmatchandroid/Interests.dart';
 import 'package:clothestmatchandroid/interactiveQueue.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'CardProvider.dart';
 import 'Settings.dart';
 
-void main() {
+void main()
+{
   runApp(const MyApp());
 }
 
@@ -25,9 +26,79 @@ class MyApp extends StatelessWidget
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Clothest Match'),
+      home: const PageManager(),
     ),
   );
+}
+
+class PageManager extends StatefulWidget {
+  const PageManager({super.key});
+
+  @override
+  State<PageManager> createState() => _PageManagerState();
+}
+
+class _PageManagerState extends State<PageManager> {
+  final pages = [
+    MyHomePage(title: "Home"),
+    InteractiveQueue(title: "Interactive Queue"),
+    Gallery(),
+    Settings()
+  ];
+
+  int currentPageIndex = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    // This method is rerun every time setState is called, for instance as done
+    // by the _incrementCounter method above.
+    //
+    // The Flutter framework has been optimized to make rerunning build methods
+    // fast, so that you can just rebuild anything that needs updating rather
+    // than having to individually change instances of widgets.
+    return Scaffold(
+      body: PageTransitionSwitcher(
+          duration: const Duration(seconds: 1),
+          transitionBuilder: (child, animation, secondaryAnimation) =>
+            SharedAxisTransition(
+              animation: animation,
+              secondaryAnimation: secondaryAnimation,
+              transitionType: SharedAxisTransitionType.horizontal,
+              child: child,),
+          child: pages[currentPageIndex]),
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.explore_sharp),
+            label: 'Interactive Queue',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.folder_special),
+            label: 'Gallery',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings),
+            label: 'Settings',
+          ),
+        ],
+        onTap: (index)
+        {
+          if (index != currentPageIndex)
+          {
+            setState(()
+            {
+              currentPageIndex = index;
+            });
+          }
+        },
+      ),
+    );
+  }
 }
 
 class MyHomePage extends StatefulWidget {
@@ -50,69 +121,10 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage>
 {
-  final tabs = [MyHomePage(title: "Home"), InteractiveQueue(title: "Interactive Queue"), Gallery(), Settings()];
-
-  int currentPageIndex = 0;
-
-  Future _GetProducts() async
-  {
-    BackendApi api = new BackendApi();
-    final a = await api.GetProducts();
-    print(a);
-  }
-
   @override
-  Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
-    return Scaffold(
-      appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-        automaticallyImplyLeading: false
-      ),
-      body: InterestsFigma(),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.explore_sharp),
-            label: 'Interactive Queue',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.folder_special),
-            label: 'Gallery',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: 'Settings',
-          ),
-        ],
-        onTap: (index) {
-          setState(() {
-            _GetProducts();
-            currentPageIndex = index;
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (_) => tabs[currentPageIndex]),
-            );
-          });
-        },
-      ),
-    );
-  }
+  Widget build(BuildContext context) => Scaffold(
+    body: SafeArea(child: Container(alignment: Alignment.center, padding: const EdgeInsets.all(16),
+      child: const Text("Welcome to Clothest Match"),)),
+  );
 }
 //HAHA

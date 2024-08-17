@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+import 'Backend_api.dart';
+
 enum CardStatus {like, dislike, checkForInfo}
 
 // Each card being dragged around, the details of the interaction
@@ -139,6 +141,13 @@ class CardProvider extends ChangeNotifier
 
   void QueueItems()
   {
+    Future _GetProducts() async
+    {
+      BackendApi api = new BackendApi();
+      final a = await api.GetProducts();
+      print(a);
+    }
+
     // Placeholder
     _urlImages = <String>
       [
