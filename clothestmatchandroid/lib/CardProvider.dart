@@ -124,7 +124,8 @@ class CardProvider extends ChangeNotifier
 
   void checkInfo()
   {
-    resetPosition();
+    _angle = 0;
+    _position = Offset(0, -_screenSize.height/2);
   }
 
   Future _nextCard() async

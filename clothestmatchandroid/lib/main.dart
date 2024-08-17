@@ -1,3 +1,4 @@
+import 'package:clothestmatchandroid/Gallery.dart';
 import 'package:clothestmatchandroid/interactiveQueue.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -46,7 +47,9 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage>
 {
+  final tabs = [MyHomePage(title: "Home"), InteractiveQueue(title: "Interactive Queue"), Gallery()];
 
+  int currentPageIndex = 0;
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
@@ -64,39 +67,33 @@ class _MyHomePageState extends State<MyHomePage>
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
+        automaticallyImplyLeading: false
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            ElevatedButton(
-              child: const Text('Go to Interactive Queue'),
-              onPressed: () 
-              {
-                // Navigate to Interactive Queue when tapped.
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const InteractiveQueue(title: "Interactive Queue")),
-                );
-              },
-            ),
-          ],
-        ),
+
+      bottomNavigationBar: BottomNavigationBar(
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.explore_sharp),
+            label: 'Interactive Queue',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.folder_special),
+            label: 'Gallery',
+          ),
+        ],
+        onTap: (index) {
+          setState(() {
+            currentPageIndex = index;
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => tabs[currentPageIndex]),
+            );
+          });
+        },
       ),
     );
   }
