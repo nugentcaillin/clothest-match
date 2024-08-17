@@ -34,6 +34,32 @@ public class ProductController {
         return new ResponseEntity<>("Created", HttpStatus.CREATED);
     }
 
+    @PostMapping("/new_photo_and_tags/{name}")
+    public ResponseEntity<String> newProduct(@PathVariable(name="name") String name, @RequestBody ProductFullTagDataAndImageURLWrapper body) {
+
+        Product product = new Product();
+        product.setName(name);
+        Tag t;
+
+        Image image = new Image();
+        image.setFilepath(body.getUrl());
+        image.setProduct(product);
+        product.setImage(image);
+
+        for (TagData td: body.getTags()) {
+            t = new Tag();
+            t.setName(td.getName());
+            t.setWeight(td.getWeight());
+            t.setProduct(product);
+            product.getTags().add(t);
+        }
+
+
+        productRepository.save(product);
+
+        return new ResponseEntity<>("Created", HttpStatus.CREATED);
+    }
+
     // initialise a product with name, image and tag names
     @PostMapping("/new_photo_no_tag_values/{name}")
     public ResponseEntity<String> newProduct(@PathVariable(name="name") String name, @RequestBody ProductTagNameAndImageURLWrapper body) {
