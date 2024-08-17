@@ -15,6 +15,9 @@ public class ProductController {
     @Autowired
     private ProductRepository productRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
     // new product with name and default tag values
     @PostMapping("/new_no_photo/{name}")
     public ResponseEntity<String> newProduct(@PathVariable(name="name") String name, @RequestBody List<TagData> tagDataList) {
@@ -88,7 +91,134 @@ public class ProductController {
     }
     @GetMapping("/{num}")
     public ResponseEntity<List<Product>> getProducts(@PathVariable(name="num") int num, HttpSession session) {
-        List<Product> products = productRepository.getSomeProducts(num);
+
+        Long userId = (Long)session.getAttribute("userId");
+        User user;
+        Gallery gallery;
+
+        if (userId == null) {
+            System.out.println("Need to create a new user");
+            user = new User();
+
+            gallery = new Gallery();
+            gallery.setUser(user);
+            user.setGallery(gallery);
+
+            userRepository.save(user);
+
+            userId = user.getId();
+            session.setAttribute("userId", user.getId());
+
+        }
+        if (userRepository.findById(userId).isPresent()) {
+            user = userRepository.findById(userId).get();
+        } else {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+        List<Product> products = productRepository.getUnseenProducts(userId, num);
         return new ResponseEntity<>(products, HttpStatus.OK);
+    }
+    @PutMapping("/swiperight")
+    public ResponseEntity<String> swipeRight(@RequestBody long productId, HttpSession session) {
+        Long userId = (Long)session.getAttribute("userId");
+        User user;
+        Product product;
+        Gallery gallery;
+
+        if (userId == null) {
+            System.out.println("Need to create a new user");
+            user = new User();
+
+            gallery = new Gallery();
+            gallery.setUser(user);
+            user.setGallery(gallery);
+
+            userRepository.save(user);
+
+            userId = user.getId();
+            session.setAttribute("userId", user.getId());
+
+        }
+        if (userRepository.findById(userId).isPresent()) {
+            user = userRepository.findById(userId).get();
+        } else {
+            return new ResponseEntity<>("error", HttpStatus.NOT_FOUND);
+        }
+
+        if (productRepository.findById(productId).isPresent()) {
+            product = productRepository.findById(productId).get();
+        } else {
+            return new ResponseEntity<>("error", HttpStatus.NOT_FOUND);
+        }
+
+        // add product to user visited and gallery
+
+        user.getProductsSeen().add(product);
+        product.getUsers().add(user);
+
+        user.getGallery().getProductsSaved().add(product);
+        product.getGalleries().add(user.getGallery());
+
+
+        // TODO: change weights of user and product
+
+
+        userRepository.save(user);
+
+
+
+        System.out.println(productId);
+        return new ResponseEntity<>("Swiped", HttpStatus.OK);
+    }
+    @PutMapping("/swipeleft")
+    public ResponseEntity<String> swipeLeft(@RequestBody long productId, HttpSession session) {
+
+        Long userId = (Long)session.getAttribute("userId");
+        User user;
+        Product product;
+        Gallery gallery;
+
+        if (userId == null) {
+            System.out.println("Need to create a new user");
+            user = new User();
+
+            gallery = new Gallery();
+            gallery.setUser(user);
+            user.setGallery(gallery);
+
+            userRepository.save(user);
+
+            userId = user.getId();
+            session.setAttribute("userId", user.getId());
+
+        }
+        if (userRepository.findById(userId).isPresent()) {
+            user = userRepository.findById(userId).get();
+        } else {
+            return new ResponseEntity<>("error", HttpStatus.NOT_FOUND);
+        }
+
+        if (productRepository.findById(productId).isPresent()) {
+            product = productRepository.findById(productId).get();
+        } else {
+            return new ResponseEntity<>("error", HttpStatus.NOT_FOUND);
+        }
+
+        // add product to user visited but not gallery
+
+        user.getProductsSeen().add(product);
+        product.getUsers().add(user);
+
+
+        // TODO: change weights of user and product
+
+
+        userRepository.save(user);
+
+
+
+        System.out.println(productId);
+        return new ResponseEntity<>("Swiped", HttpStatus.OK);
+
     }
 }

@@ -1,5 +1,6 @@
 package com.example.clothestmatch;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
@@ -11,7 +12,6 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-    private String filepath;
 
     public String getName() {
         return name;
@@ -30,6 +30,22 @@ public class Product {
     }
 
     private String name;
+
+    public List<User> getUsers() {
+        return users;
+    }
+
+    public List<Gallery> getGalleries() {
+        return galleries;
+    }
+
+    @JsonBackReference
+    @ManyToMany(mappedBy = "productsSeen")
+    private final List<User> users = new ArrayList<User>();
+
+    @JsonBackReference
+    @ManyToMany(mappedBy = "productsSaved")
+    private final List<Gallery> galleries = new ArrayList<Gallery>();
 
     @JsonManagedReference
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
