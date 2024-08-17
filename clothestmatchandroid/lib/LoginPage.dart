@@ -212,7 +212,7 @@ class SignInScreen extends StatelessWidget {
                 left: 132.34,
                 top: 783.98,
                 child: Text(
-                  'Trouble Signing In?',
+                  'Continue as Guest',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Color(0xFF69819C),
