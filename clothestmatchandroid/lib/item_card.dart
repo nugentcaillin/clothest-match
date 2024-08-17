@@ -7,8 +7,12 @@ import 'package:provider/provider.dart';
 class ItemCard extends StatefulWidget
 {
   final String urlImage;
+  final bool isFront;
 
-  const ItemCard({Key? key, required this.urlImage}) : super(key: key);
+  const ItemCard({Key? key,
+    required this.urlImage,
+    required this.isFront,
+  }) : super(key: key);
 
   @override
   State<ItemCard> createState() => _ItemCardState();
@@ -30,7 +34,9 @@ class _ItemCardState extends State<ItemCard>
   }
 
   @override
-  Widget build(BuildContext context) => SizedBox.expand(child: buildFrontCard(),);
+  Widget build(BuildContext context) => SizedBox.expand(
+    child: widget.isFront ? buildFrontCard() : buildCard(),
+  );
 
   Widget buildFrontCard() => GestureDetector(
     child: LayoutBuilder(builder: (context, constraints)

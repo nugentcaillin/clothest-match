@@ -1,5 +1,7 @@
+import 'package:clothestmatchandroid/CardProvider.dart';
 import 'package:clothestmatchandroid/item_card.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class InteractiveQueue extends StatefulWidget {
   const InteractiveQueue({super.key, required this.title});
@@ -24,8 +26,21 @@ class _InteractiveQueueState extends State<InteractiveQueue>
   @override
   Widget build(BuildContext context) => Scaffold(
     body: SafeArea(child: Container(alignment: Alignment.center, padding: const EdgeInsets.all(16),
-    child: ItemCard(urlImage: "https://m.media-amazon.com/images/I/61RSyB+kbzL._AC_SL1200_.jpg"),))
+    child: buildCards()))
   );
-
+  
+  Widget buildCards()
+  {
+    final provider = Provider.of<CardProvider>(context);
+    final urlImages = provider.urlImages;
+    
+    return Stack
+    (
+      children: urlImages.map(
+              (urlImage) => ItemCard(urlImage: urlImage,
+                                      isFront: urlImages.last == urlImage
+              )).toList(),
+    );
+  }
 
 }
