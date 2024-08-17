@@ -1,28 +1,47 @@
-/*Gallery view*/
 import 'package:flutter/material.dart';
-
-import 'Settings.dart';
+import 'package:flutter_settings_ui/flutter_settings_ui.dart';
+import 'Gallery.dart';
 import 'interactiveQueue.dart';
 import 'main.dart';
 
-class Gallery extends StatefulWidget
+class Settings extends StatefulWidget
 {
-  const Gallery({super.key});
+  const Settings({super.key});
 
 
-  State<Gallery> createState() => _GalleryState();
+  State<Settings> createState() => _SettingsState();
 }
 
-class _GalleryState extends State<Gallery>
+class _SettingsState extends State<Settings>
 {
   final tabs = [MyHomePage(title: "Home"), InteractiveQueue(title: "Interactive Queue"), Gallery(), Settings()];
 
-  int currentPageIndex = 2;
+  int currentPageIndex = 3;
 
   @override
   Widget build(BuildContext context) => Scaffold(
     body: SafeArea(child: Container(alignment: Alignment.center, padding: const EdgeInsets.all(16),
-    child: const Text("Welcome to the gallery"),)),
+      child: SettingsList(
+        sections: [
+                SettingsSection(
+                  title: const Text('Settings'),
+                  tiles: [
+                    SettingsTile(
+                      title: const Text('Language'),
+                      description: const Text('English'),
+                      leading: const Icon(Icons.language),
+                      onPressed: (BuildContext context) {},
+                    ),
+                    SettingsTile.switchTile(
+                      initialValue: false,
+                      title: const Text('Use fingerprint'),
+                      leading: const Icon(Icons.fingerprint),
+                      onToggle: (bool value) {},
+                    ),
+                  ],
+                ),
+              ],)
+    )),
     bottomNavigationBar: BottomNavigationBar(
       type: BottomNavigationBarType.fixed,
       items: const [
