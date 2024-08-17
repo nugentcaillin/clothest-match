@@ -1,0 +1,201 @@
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(const FigmaToCodeApp());
+}
+
+class FigmaToCodeApp extends StatelessWidget {
+  const FigmaToCodeApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      theme: ThemeData.dark().copyWith(
+        scaffoldBackgroundColor: const Color.fromARGB(255, 18, 32, 47),
+      ),
+      home: Scaffold(
+        body: ListView(children: [
+          SignInScreen(),
+        ]),
+      ),
+    );
+  }
+}
+
+class SignInScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Container(
+          width: 393,
+          height: 852,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment(0.35, 0.94),
+              end: Alignment(-0.35, -0.94),
+              colors: [Color(0xFF7ADFBB), Color(0xFF95C5F5), Color(0xFF96C5F7)],
+            ),
+          ),
+          child: Stack(
+            children: [
+              Positioned(
+                left: 101.44,
+                top: 378.56,
+                child: Container(
+                  width: 38.40,
+                  height: 45.11,
+                  child: FlutterLogo(),
+                ),
+              ),
+              Positioned(
+                left: 44.67,
+                top: 510.56,
+                child: Container(
+                  width: 303.32,
+                  height: 54,
+                  child: Stack(
+                    children: [
+                      Positioned(
+                        left: 0,
+                        top: 0,
+                        child: SizedBox(
+                          width: 303.32,
+                          child: Text(
+                            'By tapping Create Account or Sign In, you agree to our Terms. Learn how we process your data in our Privacy Policy and Cookies Policy.',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 12.43,
+                              fontFamily: 'Inter',
+                              fontWeight: FontWeight.w500,
+                              height: 0.12,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Positioned(
+                left: 30.57,
+                top: 591.52,
+                child: Container(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Container(
+                        width: 331.53,
+                        padding: const EdgeInsets.symmetric(horizontal: 83.30, vertical: 16.12),
+                        decoration: ShapeDecoration(
+                          shape: RoundedRectangleBorder(
+                            side: BorderSide(width: 1.34, color: Colors.white),
+                            borderRadius: BorderRadius.circular(67.18),
+                          ),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              'SIGN IN WITH APPLE',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 14.78,
+                                fontFamily: 'Inter',
+                                fontWeight: FontWeight.w600,
+                                height: 0,
+                                letterSpacing: 0.15,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 10.75),
+                      Container(
+                        width: 316.75,
+                        padding: const EdgeInsets.symmetric(horizontal: 83.30, vertical: 16.12),
+                        decoration: ShapeDecoration(
+                          shape: RoundedRectangleBorder(
+                            side: BorderSide(width: 1.34, color: Colors.white),
+                            borderRadius: BorderRadius.circular(67.18),
+                          ),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              'SIGN IN WITH FACEBOOK',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 14.78,
+                                fontFamily: 'Inter',
+                                fontWeight: FontWeight.w600,
+                                height: 0,
+                                letterSpacing: 0.15,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 10.75),
+                      Container(
+                        width: 331.53,
+                        padding: const EdgeInsets.symmetric(horizontal: 83.30, vertical: 16.12),
+                        decoration: ShapeDecoration(
+                          shape: RoundedRectangleBorder(
+                            side: BorderSide(width: 1.34, color: Colors.white),
+                            borderRadius: BorderRadius.circular(67.18),
+                          ),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              'SIGN IN WITH PHONE NUMBER',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 14.78,
+                                fontFamily: 'Inter',
+                                fontWeight: FontWeight.w600,
+                                height: 0,
+                                letterSpacing: 0.15,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Positioned(
+                left: 132.34,
+                top: 783.98,
+                child: Text(
+                  'Trouble Signing In?',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 14.11,
+                    fontFamily: 'Inter',
+                    fontWeight: FontWeight.w500,
+                    height: 0.09,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
