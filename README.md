@@ -1,7 +1,7 @@
 # clothest-match
 
 # setup
-To run this project you will need to have Android Studio, git, Java SDK 17, mysql, maven and an editor of your choice ie. VsCode, intelliJ
+To run this project you will need to have Android Studio, git, Java SDK 17, mysql, flutter, maven and an editor of your choice ie. VsCode, intelliJ
 
 - After installing these, clone the repository
 ```console
