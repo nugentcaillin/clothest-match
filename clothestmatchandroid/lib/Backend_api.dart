@@ -1,16 +1,28 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:http/http.dart' as http;
 
 class BackendApi
 {
-  Future<String?> GetProducts() async
+  static String sessionId = "";
+
+  Future<http.Response?> GetProducts() async
   {
+    if (sessionId == "") {
+      print("No session stored");
+    } else {
+      print("Session: " + sessionId);
+    }
     var client = http.Client();
     var uri = Uri.parse('http://api.clothestmatch.caillin.net/product/20');
     var response = await client.get(uri);
     if (response.statusCode == 200)
     {
-      return Utf8Decoder().convert(response.bodyBytes);
+      String headerString = response.headers.toString();
+      headerString = headerString.substring(headerString.indexOf("SESSION"));
+      headerString = headerString.substring(0, headerString.indexOf(';'));
+      sessionId = headerString;
+      return response;
     }
     return null;
   }

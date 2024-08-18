@@ -63,6 +63,8 @@ class CardProvider extends ChangeNotifier
     switch (status)
     {
       case CardStatus.like:
+        BackendApi backendApi = new BackendApi();
+        backendApi.GetProducts();
         like();
         break;
       case CardStatus.dislike:
