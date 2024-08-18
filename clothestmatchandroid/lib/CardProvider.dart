@@ -1,5 +1,6 @@
 import 'package:clothestmatchandroid/Card.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart' as FM ;
 import 'package:fluttertoast/fluttertoast.dart';
 
 import 'Backend_api.dart';
@@ -72,8 +73,6 @@ class CardProvider extends ChangeNotifier
         break;
       case CardStatus.dislike:
         dislike();
-      case CardStatus.checkForInfo:
-        checkInfo();
       default:
         resetPosition();
     }
@@ -134,10 +133,20 @@ class CardProvider extends ChangeNotifier
     notifyListeners();
   }
 
-  void checkInfo()
+  void showDetails(context)
   {
     _angle = 0;
-    _position = Offset(0, -_screenSize.height/2);
+    _position = Offset.zero;
+    Card tmp = cards.last;
+    FM.showDialog(context: context, builder: (context) => FM.AlertDialog(
+      title: Text(tmp.getId().toString()),
+      content: Text(tmp.getUrl()),
+      actions: [
+        FM.TextButton(
+            onPressed: ()=>FM.Navigator.pop(context),
+            child: const Text("Close"))
+      ],
+    ));
   }
 
   Future _nextCard() async

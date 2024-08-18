@@ -58,6 +58,13 @@ class _ItemCardState extends State<ItemCard>
                                 transform: rotatedMatrix..translate(position.dx, position.dy),
                                 child: buildCard(),);
     }),
+    onTap: ()
+    {
+      final provider = Provider.of<CardProvider>(context, listen: false);
+      print("Container was tapped");
+      provider.showDetails(context);
+    },
+
     onPanStart: (details)
     {
       final provider = Provider.of<CardProvider>(context, listen: false);
