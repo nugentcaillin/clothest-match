@@ -47,6 +47,19 @@ public class Product {
     @ManyToMany(mappedBy = "productsSaved")
     private final List<Gallery> galleries = new ArrayList<Gallery>();
 
+    public User getUserCreated() {
+        return userCreated;
+    }
+
+    public void setUserCreated(User userCreated) {
+        this.userCreated = userCreated;
+    }
+
+    @JsonBackReference
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="user_created_id")
+    private User userCreated;
+
     @JsonManagedReference
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private final List<Tag> tags = new ArrayList<Tag>();

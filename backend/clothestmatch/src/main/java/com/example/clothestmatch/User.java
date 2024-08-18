@@ -44,6 +44,23 @@ public class User {
             private List<Tag> tags;
     private String sessionID;
 
+    public List<Product> getProductsCreated() {
+        return productsCreated;
+    }
+
+    public String getSessionID() {
+        return sessionID;
+    }
+
+    public void setSessionID(String sessionID) {
+        this.sessionID = sessionID;
+    }
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "userCreated", cascade = CascadeType.ALL, orphanRemoval = true)
+    private final List<Product> productsCreated = new ArrayList<>();
+
+
     public long getId() {
         return id;
     }

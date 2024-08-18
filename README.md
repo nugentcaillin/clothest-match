@@ -77,7 +77,7 @@ If database is working, you will see the message Database Working on the screen
 ### GET /product/{count}
 returns up to count products not previously seen by user. 
 ### POST /prodact/new_photo_no_tag_values/{name}
-create a new product with a photo, name and tags, which will be initialised with weights of 0
+create a new product with a photo, name and tags, which will be initialised with weights of 0. Creates session for company if not present
 ###### example body:
 ```
 {
@@ -90,7 +90,7 @@ create a new product with a photo, name and tags, which will be initialised with
 ```
 ### POST /product/new_photo_and_tags/{name}
 
-create a new product with a photo, name and tags with individual starting weights
+create a new product with a photo, name and tags with individual starting weights, creates session for company if not present
 ###### example body:
 ```
 {
@@ -107,4 +107,6 @@ create a new product with a photo, name and tags with individual starting weight
 Marks a product as seen, and adds it to the users gallery. Adjusts the users tag weights, and slightly adjust products tag weights. Accepts product ID in body of request
 ### PUT /product/swipeLeft
 Marks a product as seen, and does not add it to the users gallery. Adjusts the users tag weights and slightly adjusts products tag weights
+### GET /product/created
+Gets information about products a company has posted for analytics
 

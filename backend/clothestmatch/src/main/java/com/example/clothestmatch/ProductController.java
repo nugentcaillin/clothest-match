@@ -12,6 +12,46 @@ import java.util.List;
 @Controller
 @RequestMapping("/product")
 public class ProductController {
+
+    @GetMapping("/created")
+    public ResponseEntity<List<Product>> getProductsCreated(HttpSession session) {
+        User user;
+        user = createUserIfNotPresent(session);
+        if (user == null) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>(user.getProductsCreated(), HttpStatus.OK);
+    }
+
+    private User createUserIfNotPresent(HttpSession session) {
+        Long userId = (Long)session.getAttribute("userId");
+        User user;
+        Gallery gallery;
+
+        if (userId == null) {
+            System.out.println("Need to create a new user");
+            user = new User();
+
+            gallery = new Gallery();
+            gallery.setUser(user);
+            user.setGallery(gallery);
+
+            userRepository.save(user);
+
+            userId = user.getId();
+            session.setAttribute("userId", user.getId());
+            userRepository.save(user);
+        }
+
+        if (userRepository.findById(userId).isPresent()) {
+            user = userRepository.findById(userId).get();
+        } else {
+            return null;
+        }
+        return user;
+    }
+
     @Autowired
     private ProductRepository productRepository;
 
@@ -20,9 +60,17 @@ public class ProductController {
 
     // new product with name and default tag values
     @PostMapping("/new_no_photo/{name}")
-    public ResponseEntity<String> newProduct(@PathVariable(name="name") String name, @RequestBody List<TagData> tagDataList) {
+    public ResponseEntity<String> newProduct(@PathVariable(name="name") String name, @RequestBody List<TagData> tagDataList, HttpSession session) {
+        User user;
+        user = createUserIfNotPresent(session);
+        if (user == null) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+
         Product product = new Product();
         product.setName(name);
+        product.setUserCreated(user);
+        user.getProductsCreated().add(product);
         Tag t;
 
         for (TagData td: tagDataList) {
@@ -38,10 +86,17 @@ public class ProductController {
     }
 
     @PostMapping("/new_photo_and_tags/{name}")
-    public ResponseEntity<String> newProduct(@PathVariable(name="name") String name, @RequestBody ProductFullTagDataAndImageURLWrapper body) {
+    public ResponseEntity<String> newProduct(@PathVariable(name="name") String name, @RequestBody ProductFullTagDataAndImageURLWrapper body, HttpSession session) {
+        User user;
+        user = createUserIfNotPresent(session);
+        if (user == null) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
 
         Product product = new Product();
         product.setName(name);
+        product.setUserCreated(user);
+        user.getProductsCreated().add(product);
         Tag t;
 
         Image image = new Image();
@@ -65,9 +120,16 @@ public class ProductController {
 
     // initialise a product with name, image and tag names
     @PostMapping("/new_photo_no_tag_values/{name}")
-    public ResponseEntity<String> newProduct(@PathVariable(name="name") String name, @RequestBody ProductTagNameAndImageURLWrapper body) {
+    public ResponseEntity<String> newProduct(@PathVariable(name="name") String name, @RequestBody ProductTagNameAndImageURLWrapper body, HttpSession session) {
+        User user;
+        user = createUserIfNotPresent(session);
+        if (user == null) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
         Product product = new Product();
         product.setName(name);
+        product.setUserCreated(user);
+        user.getProductsCreated().add(product);
         // handle image
         Image image = new Image();
         image.setFilepath(body.getUrl());
@@ -92,56 +154,23 @@ public class ProductController {
     @GetMapping("/{num}")
     public ResponseEntity<List<Product>> getProducts(@PathVariable(name="num") int num, HttpSession session) {
 
-        Long userId = (Long)session.getAttribute("userId");
         User user;
-        Gallery gallery;
-
-        if (userId == null) {
-            System.out.println("Need to create a new user");
-            user = new User();
-
-            gallery = new Gallery();
-            gallery.setUser(user);
-            user.setGallery(gallery);
-
-            userRepository.save(user);
-
-            userId = user.getId();
-            session.setAttribute("userId", user.getId());
-
-        }
-        if (userRepository.findById(userId).isPresent()) {
-            user = userRepository.findById(userId).get();
-        } else {
+        user = createUserIfNotPresent(session);
+        if (user == null) {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
-        List<Product> products = productRepository.getUnseenProducts(userId, num);
+
+        List<Product> products = productRepository.getUnseenProducts(user.getId(), num);
         return new ResponseEntity<>(products, HttpStatus.OK);
     }
     @PutMapping("/swiperight")
     public ResponseEntity<String> swipeRight(@RequestBody long productId, HttpSession session) {
-        Long userId = (Long)session.getAttribute("userId");
-        User user;
+
         Product product;
-        Gallery gallery;
 
-        if (userId == null) {
-            System.out.println("Need to create a new user");
-            user = new User();
-
-            gallery = new Gallery();
-            gallery.setUser(user);
-            user.setGallery(gallery);
-
-            userRepository.save(user);
-
-            userId = user.getId();
-            session.setAttribute("userId", user.getId());
-
-        }
-        if (userRepository.findById(userId).isPresent()) {
-            user = userRepository.findById(userId).get();
-        } else {
+        User user;
+        user = createUserIfNotPresent(session);
+        if (user == null) {
             return new ResponseEntity<>("error", HttpStatus.NOT_FOUND);
         }
 
