@@ -37,14 +37,15 @@ class _InteractiveQueueState extends State<InteractiveQueue>
   {
     final provider = Provider.of<CardProvider>(context, listen: true);
     final urlImages = provider.urlImages;
+    final cards = provider.cards;
 
-    if (urlImages.isNotEmpty)
+    if (cards.isNotEmpty)
     {
         return Stack
           (
-          children: urlImages.map(
-                  (urlImage) => ItemCard(urlImage: urlImage,
-                  isFront: urlImages.last == urlImage
+          children: cards.map(
+                  (card) => ItemCard(urlImage: card.url,
+                  isFront: cards.last == card
               )).toList(),
         );
     }

@@ -117,6 +117,7 @@ class CardProvider extends ChangeNotifier
   {
     _angle = 20;
     _position += Offset(2 * _screenSize.width / 2, 0);
+    backendApi.swipeRight(cards.last);
     _nextCard();
 
     notifyListeners();
@@ -126,6 +127,7 @@ class CardProvider extends ChangeNotifier
   {
     _angle = -20;
     _position += Offset(-2 * _screenSize.width / 2, 0);
+    backendApi.swipeLeft(cards.last);
     _nextCard();
 
     notifyListeners();
@@ -139,10 +141,10 @@ class CardProvider extends ChangeNotifier
 
   Future _nextCard() async
   {
-    if (_urlImages.isEmpty) return;
+    if (_cards.isEmpty) return;
 
     await Future.delayed(const Duration(milliseconds: 200));
-    _urlImages.removeLast();
+    _cards.removeLast();
     resetPosition();
   }
 

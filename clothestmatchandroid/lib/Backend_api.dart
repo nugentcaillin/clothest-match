@@ -7,6 +7,41 @@ class BackendApi
 {
   static String sessionId = "";
 
+  void swipeRight(Card card) async {
+    var client = http.Client();
+
+    Map<String, String> headers = new Map();
+    if (sessionId == "") {
+      print("No session stored");
+    } else {
+      headers["Cookie"] = sessionId;
+      print("Session: " + sessionId);
+    }
+    headers["Content-Type"] = "application/json";
+    var uri = Uri.parse('http://api.clothestmatch.caillin.net/product/swiperight');
+    var response = await client.put(uri, headers: headers, body: json.encode(card.getId()));
+    print(response.statusCode);
+    return;
+
+  }
+  void swipeLeft(Card card) async {
+    var client = http.Client();
+
+    Map<String, String> headers = new Map();
+    if (sessionId == "") {
+      print("No session stored");
+    } else {
+      headers["Cookie"] = sessionId;
+      print("Session: " + sessionId);
+    }
+    headers["Content-Type"] = "application/json";
+    var uri = Uri.parse('http://api.clothestmatch.caillin.net/product/swipeleft');
+    var response = await client.put(uri, headers: headers, body: json.encode(card.getId()));
+    print(response.statusCode);
+    return;
+
+  }
+
   Future<List<Card>> GetProducts() async
   {
     Map<String, String> headers = new Map();
