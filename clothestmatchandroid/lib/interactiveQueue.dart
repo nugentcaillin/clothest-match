@@ -26,44 +26,45 @@ class InteractiveQueue extends StatefulWidget
 class _InteractiveQueueState extends State<InteractiveQueue>
 {
   int currentPageIndex = 1;
-  CardProvider cardProvider = new CardProvider();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) => Scaffold(
+    body: SafeArea(child: Container(alignment: Alignment.center, padding: const EdgeInsets.all(16),
+        child: buildCards())),
+  );
 
-    return SafeArea(child: Container(
-          alignment: Alignment.center, padding: const EdgeInsets.all(16),
-          child: buildCards()));
-    }
+  Widget buildCards()
+  {
+    final provider = Provider.of<CardProvider>(context, listen: true);
+    final urlImages = provider.urlImages;
+    final cards = provider.cards;
 
-    Widget buildCards()
+    if (cards.isNotEmpty)
     {
-
-      if (cardProvider.getCards().isNotEmpty)
-      {
-        return Stack
-          (
-          children: cardProvider.getCards().map(
-                  (card) => ItemCard(urlImage: card.url,
-                  isFront: cardProvider.getCards().last == card
-              )).toList(),
-        );
-      }
-      else
-      {
-        return Center(child: ElevatedButton(
-            onPressed: () async
-            {
-              await cardProvider.QueueItems();
-              SchedulerBinding.instance.addPostFrameCallback((_)
-              {
-                setState(() {});
-              });
-            },
-            child: const Text("New Queue")
-        ));
-      }
-
+      return Stack
+        (
+        children: cards.map(
+                (card) => ItemCard(urlImage: card.url,
+                isFront: cards.last == card
+            )).toList(),
+      );
     }
+    else
+    {
+      return Center(child: ElevatedButton(
+          onPressed: () async
+          {
+            final provider = Provider.of<CardProvider>(context, listen: false);
+            await provider.QueueItems();
+            SchedulerBinding.instance.addPostFrameCallback((_)
+            {
+              setState(() {});
+            });
+          },
+          child: const Text("New Queue")
+      ));
+    }
+
   }
 
+}
