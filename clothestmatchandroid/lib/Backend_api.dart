@@ -6,7 +6,7 @@ class BackendApi
   Future<String?> GetProducts() async
   {
     var client = http.Client();
-    var uri = Uri.parse('http://10.12.98.212:8080/product/20');
+    var uri = Uri.parse('http://api.clothestmatch.caillin.net/product/20');
     var response = await client.get(uri);
     if (response.statusCode == 200)
     {
