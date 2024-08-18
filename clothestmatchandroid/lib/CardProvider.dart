@@ -68,8 +68,6 @@ class CardProvider extends ChangeNotifier
     switch (status)
     {
       case CardStatus.like:
-        BackendApi backendApi = new BackendApi();
-        backendApi.GetProducts();
         like();
         break;
       case CardStatus.dislike:
@@ -119,6 +117,7 @@ class CardProvider extends ChangeNotifier
     _position += Offset(2 * _screenSize.width / 2, 0);
     backendApi.swipeRight(cards.last);
     _nextCard();
+    if (_cards.length < 2) QueueItems();
 
     notifyListeners();
   }
@@ -129,6 +128,8 @@ class CardProvider extends ChangeNotifier
     _position += Offset(-2 * _screenSize.width / 2, 0);
     backendApi.swipeLeft(cards.last);
     _nextCard();
+
+    if (_cards.length < 2) QueueItems();
 
     notifyListeners();
   }
@@ -152,7 +153,19 @@ class CardProvider extends ChangeNotifier
   {
     final response = await backendApi.GetProducts();
 
-    _cards = response;
+    print("CARDS BEFORE STATE");
+    print(_cards);
+
+    Card tmp = response.last;
+    response.last = cards.last;
+    cards.last = tmp;
+    _cards = _cards + response;
+
+    print("RESPONSE");
+    print(response);
+
+    print("CARD STATE");
+    print(_cards);
 
     // Placeholder
     _urlImages = <String>

@@ -36,8 +36,11 @@ class _InteractiveQueueState extends State<InteractiveQueue>
   Widget buildCards()
   {
     final provider = Provider.of<CardProvider>(context, listen: true);
+
     final urlImages = provider.urlImages;
     final cards = provider.cards;
+
+
 
     if (cards.isNotEmpty)
     {
@@ -51,6 +54,10 @@ class _InteractiveQueueState extends State<InteractiveQueue>
     }
     else
     {
+      provider.QueueItems();
+      Future.delayed(const Duration(milliseconds: 500), () {
+        setState(() {});
+      });
       return Center(child: ElevatedButton(
           onPressed: () async
           {
