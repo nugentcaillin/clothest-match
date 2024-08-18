@@ -21,6 +21,8 @@ class CardProvider extends ChangeNotifier
   Offset get position => _position;
   double get angle => _angle;
 
+  BackendApi backendApi = BackendApi();
+
   CardProvider()
   {
     QueueItems();
@@ -141,13 +143,13 @@ class CardProvider extends ChangeNotifier
     resetPosition();
   }
 
-  void QueueItems()
+  void QueueItems() async
   {
-    Future _GetProducts() async
+    final response = await backendApi.GetProducts();
+    String items = response as String;
+    if (items.isNotEmpty)
     {
-      BackendApi api = new BackendApi();
-      final a = await api.GetProducts();
-      print(a);
+      print(items);
     }
 
     // Placeholder

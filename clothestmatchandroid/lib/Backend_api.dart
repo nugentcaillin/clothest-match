@@ -6,7 +6,7 @@ class BackendApi
 {
   static String sessionId = "";
 
-  Future<http.Response?> GetProducts() async
+  Future<String?> GetProducts() async
   {
     if (sessionId == "") {
       print("No session stored");
@@ -22,7 +22,7 @@ class BackendApi
       headerString = headerString.substring(headerString.indexOf("SESSION"));
       headerString = headerString.substring(0, headerString.indexOf(';'));
       sessionId = headerString;
-      return response;
+      return response.body;
     }
     return null;
   }
