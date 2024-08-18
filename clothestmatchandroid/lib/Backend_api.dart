@@ -1,12 +1,13 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:clothestmatchandroid/Card.dart';
 import 'package:http/http.dart' as http;
 
 class BackendApi
 {
   static String sessionId = "";
 
-  Future<String?> GetProducts() async
+  Future<List<Card>?> GetProducts() async
   {
     Map<String, String> headers = new Map();
     if (sessionId == "") {
@@ -28,7 +29,18 @@ class BackendApi
         headerString = headerString.substring(0, headerString.indexOf(';'));
         sessionId = headerString;
       }
-      return response.body;
+      final parsedJson = jsonDecode(response.body);
+      //print(parsedJson);
+      List<Card> cards = [];
+      for (var item in parsedJson) {
+        Card card = new Card();
+        card.setId(item["id"]);
+        card.setUrl(item["image"]["filepath"]);
+        cards.add(card);
+      }
+      print(cards);
+
+      return cards;
     }
     return null;
   }
