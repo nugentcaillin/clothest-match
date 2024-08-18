@@ -5,11 +5,14 @@ Tinder for clothes - match users with close they truly like while giving brands 
 
 Clothest match's innovative swiping system allows us to quickly get a picture of a customers clothing preference and track how customers see a product.
 
-Clothes are assigned different categories, and swipes both left and right adjust the weight of characteristics for both users and products. This constant feedback allows us to fine tune our reccomendation algorithm, and get a clear picture of how consumers see products
+Clothes are assigned different categories, and swipes both left and right adjust the weight of characteristics for both users and products. This constant feedback allows us to fine tune our reccomendation algorithm, and get a clear picture of how consumers see products.
+
 ## technology
 For our frontend, we implement a standalone cross platform application using Flutter.
 
 For the backend, we use Spring boot, spring data JPA, mysql and spring session to make a RESTful API, with the backend containerised and deployed at http://api.clothestmatch.caillin.net with docker. API endpoints can be viewed at the end of this document.
+
+We also make some of these endpoints available for brands to interact with our platform through whatever method they please
 
 Login is handled with session tokens, so users do not even need to log in to use the service if they do not wish to ie. tiktok style login
 
