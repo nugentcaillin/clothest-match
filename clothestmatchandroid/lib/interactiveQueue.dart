@@ -51,12 +51,12 @@ class _InteractiveQueueState extends State<InteractiveQueue>
     else
     {
       return Center(child: ElevatedButton(
-          onPressed: ()
+          onPressed: () async
           {
             final provider = Provider.of<CardProvider>(context, listen: false);
-            provider.QueueItems();
-            SchedulerBinding.instance.addPostFrameCallback(
-                    (_){
+            await provider.QueueItems();
+            SchedulerBinding.instance.addPostFrameCallback((_)
+                {
                   setState(() {});
                 });
           },

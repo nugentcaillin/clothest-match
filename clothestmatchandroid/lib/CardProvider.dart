@@ -143,7 +143,7 @@ class CardProvider extends ChangeNotifier
     resetPosition();
   }
 
-  void QueueItems() async
+  Future<void> QueueItems() async
   {
     final response = await backendApi.GetProducts();
     String items = response as String;
