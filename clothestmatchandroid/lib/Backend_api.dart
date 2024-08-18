@@ -7,6 +7,18 @@ class BackendApi
 {
   static String sessionId = "";
 
+  bool hasSessionID()
+  {
+    if (sessionId != "")
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+  }
+
   void swipeRight(Card card) async {
     var client = http.Client();
 
@@ -87,10 +99,9 @@ class BackendApi
       print("Session: " + sessionId);
     }
     var client = http.Client();
-    var uri = Uri.parse('http://api.clothestmatch.caillin.net/gallery');
+    var uri = Uri.parse('http://api.clothestmatch.caillin.net/gallery/get');
     var response = await client.get(uri, headers: headers);
     List<Card> cards = [];
-
     if (response.statusCode == 200)
     {
       String headerString;
@@ -101,13 +112,14 @@ class BackendApi
         sessionId = headerString;
       }
       final parsedJson = jsonDecode(response.body);
-      for (var item in parsedJson) {
+      print(parsedJson);
+      for (var item in parsedJson["productsSaved"]) {
         Card card = new Card();
         card.setId(item["id"]);
         card.setUrl(item["image"]["filepath"]);
         cards.add(card);
       }
-      print(cards);
+      //print(cards);
     }
     return cards;
   }
