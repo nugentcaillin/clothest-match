@@ -26,10 +26,6 @@ class CardProvider extends ChangeNotifier
 
   BackendApi backendApi = BackendApi();
 
-  CardProvider()
-  {
-    QueueItems();
-  }
 
   void setScreenSize(Size screenSize) => _screenSize = screenSize;
 
@@ -119,6 +115,7 @@ class CardProvider extends ChangeNotifier
     _position += Offset(2 * _screenSize.width / 2, 0);
     backendApi.swipeRight(cards.last);
     _nextCard();
+    if (cards.length < 3) QueueItems();
 
     notifyListeners();
   }
@@ -128,9 +125,14 @@ class CardProvider extends ChangeNotifier
     _angle = -20;
     _position += Offset(-2 * _screenSize.width / 2, 0);
     backendApi.swipeLeft(cards.last);
+    if (cards.length < 3) QueueItems();
     _nextCard();
 
     notifyListeners();
+  }
+
+  List<Card> getCards() {
+    return _cards;
   }
 
   void checkInfo()
@@ -152,7 +154,10 @@ class CardProvider extends ChangeNotifier
   {
     final response = await backendApi.GetProducts();
 
-    _cards = response;
+    _cards = response + _cards;
+
+    print("CARDS is NOW");
+    print(_cards);
 
     // Placeholder
     _urlImages = <String>

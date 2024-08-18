@@ -52,7 +52,7 @@ class BackendApi
       print("Session: " + sessionId);
     }
     var client = http.Client();
-    var uri = Uri.parse('http://api.clothestmatch.caillin.net/product/20');
+    var uri = Uri.parse('http://api.clothestmatch.caillin.net/product/5');
     var response = await client.get(uri, headers: headers);
     List<Card> cards = [];
 
