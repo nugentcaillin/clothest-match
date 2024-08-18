@@ -79,7 +79,7 @@ If database is working, you will see the message Database Working on the screen
 
 ### GET /product/{count}
 returns up to count products not previously seen by user. 
-### POST /prodact/new_photo_no_tag_values/{name}
+### POST /product/new_photo_no_tag_values/{name}
 create a new product with a photo, name and tags, which will be initialised with weights of 0. Creates session for company if not present
 ###### example body:
 ```
