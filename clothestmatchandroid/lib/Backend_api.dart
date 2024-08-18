@@ -76,4 +76,39 @@ class BackendApi
     }
     return cards;
   }
+
+  Future<List<Card>> GetProductsForGallery() async
+  {
+    Map<String, String> headers = new Map();
+    if (sessionId == "") {
+      print("No session stored");
+    } else {
+      headers["Cookie"] = sessionId;
+      print("Session: " + sessionId);
+    }
+    var client = http.Client();
+    var uri = Uri.parse('http://api.clothestmatch.caillin.net/gallery');
+    var response = await client.get(uri, headers: headers);
+    List<Card> cards = [];
+
+    if (response.statusCode == 200)
+    {
+      String headerString;
+      if (response.headers.toString().isNotEmpty && response.headers.toString().contains("set-cookie")) {
+        headerString = response.headers.toString();
+        headerString = headerString.substring(headerString.indexOf("SESSION"));
+        headerString = headerString.substring(0, headerString.indexOf(';'));
+        sessionId = headerString;
+      }
+      final parsedJson = jsonDecode(response.body);
+      for (var item in parsedJson) {
+        Card card = new Card();
+        card.setId(item["id"]);
+        card.setUrl(item["image"]["filepath"]);
+        cards.add(card);
+      }
+      print(cards);
+    }
+    return cards;
+  }
 }

@@ -2,6 +2,7 @@ import 'package:animations/animations.dart';
 import 'package:clothestmatchandroid/Backend_api.dart';
 import 'package:clothestmatchandroid/Gallery.dart';
 import 'package:clothestmatchandroid/interactiveQueue.dart';
+import 'package:clothestmatchandroid/welcomepage.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'CardProvider.dart';
@@ -123,8 +124,8 @@ class _MyHomePageState extends State<MyHomePage>
 {
   @override
   Widget build(BuildContext context) => Scaffold(
-    body: SafeArea(child: Container(alignment: Alignment.center, padding: const EdgeInsets.all(16),
-      child: const Text("Welcome to Clothest Match"),)),
+    body: SafeArea(child: Container(alignment: Alignment.center,
+      child: const Onboarding(),)),
   );
 }
 //HAHA
