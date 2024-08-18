@@ -156,10 +156,14 @@ class CardProvider extends ChangeNotifier
     print("CARDS BEFORE STATE");
     print(_cards);
 
-    Card tmp = response.last;
-    response.last = cards.last;
-    cards.last = tmp;
-    _cards = _cards + response;
+    if (_cards.isNotEmpty) {
+      Card tmp = response.last;
+      response.last = cards.last;
+      cards.last = tmp;
+      _cards = _cards + response;
+    } else {
+      _cards = response;
+    }
 
     print("RESPONSE");
     print(response);
