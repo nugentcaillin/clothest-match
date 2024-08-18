@@ -1,3 +1,4 @@
+import 'package:clothestmatchandroid/Card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -10,6 +11,7 @@ enum CardStatus {like, dislike, checkForInfo}
 class CardProvider extends ChangeNotifier
 {
   List<String> _urlImages = [];
+  List<Card> _cards = [];
 
   bool _isDragging = false;
   Offset _position = Offset.zero;
@@ -17,6 +19,7 @@ class CardProvider extends ChangeNotifier
   double _angle = 0;
 
   List<String> get urlImages => _urlImages;
+  List<Card> get cards => _cards;
   bool get isDragging => _isDragging;
   Offset get position => _position;
   double get angle => _angle;
@@ -146,11 +149,8 @@ class CardProvider extends ChangeNotifier
   Future<void> QueueItems() async
   {
     final response = await backendApi.GetProducts();
-    String items = response as String;
-    if (items.isNotEmpty)
-    {
-      print(items);
-    }
+
+    _cards = response;
 
     // Placeholder
     _urlImages = <String>

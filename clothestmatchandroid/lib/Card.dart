@@ -1,22 +1,26 @@
-public class Card {
-    private String url;
+class Card {
+    String url = "";
 
-    public long getId() {
+    int getId() {
         return id;
     }
 
-    public void setId(long id) {
+    void setId(int id) {
         this.id = id;
     }
 
-    public String getUrl() {
+    String getUrl() {
         return url;
     }
 
-    public void setUrl(String url) {
+    void setUrl(String url) {
         this.url = url;
     }
 
-    private long id;
+    int id = 0;
+
+    String toString() {
+        return id.toString();
+    }
 
 }

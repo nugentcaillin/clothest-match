@@ -7,7 +7,7 @@ class BackendApi
 {
   static String sessionId = "";
 
-  Future<List<Card>?> GetProducts() async
+  Future<List<Card>> GetProducts() async
   {
     Map<String, String> headers = new Map();
     if (sessionId == "") {
@@ -19,6 +19,7 @@ class BackendApi
     var client = http.Client();
     var uri = Uri.parse('http://api.clothestmatch.caillin.net/product/20');
     var response = await client.get(uri, headers: headers);
+    List<Card> cards = [];
 
     if (response.statusCode == 200)
     {
@@ -30,8 +31,6 @@ class BackendApi
         sessionId = headerString;
       }
       final parsedJson = jsonDecode(response.body);
-      //print(parsedJson);
-      List<Card> cards = [];
       for (var item in parsedJson) {
         Card card = new Card();
         card.setId(item["id"]);
@@ -39,9 +38,7 @@ class BackendApi
         cards.add(card);
       }
       print(cards);
-
-      return cards;
     }
-    return null;
+    return cards;
   }
 }
