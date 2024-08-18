@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'CardProvider.dart';
 import 'item_card.dart';
+import "package:flutter/scheduler.dart";
 
 class InteractiveQueue extends StatefulWidget
 {
@@ -54,7 +55,10 @@ class _InteractiveQueueState extends State<InteractiveQueue>
           {
             final provider = Provider.of<CardProvider>(context, listen: false);
             provider.QueueItems();
-            setState(() {});
+            SchedulerBinding.instance.addPostFrameCallback(
+                    (_){
+                  setState(() {});
+                });
           },
           child: const Text("New Queue")
       ));

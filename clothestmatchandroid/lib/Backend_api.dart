@@ -6,7 +6,7 @@ class BackendApi
 {
   static String sessionId = "";
 
-  Future<http.Response?> GetProducts() async
+  Future<String?> GetProducts() async
   {
     Map<String, String> headers = new Map();
     if (sessionId == "") {
@@ -15,9 +15,6 @@ class BackendApi
       headers["Cookie"] = sessionId;
       print("Session: " + sessionId);
     }
-
-
-
     var client = http.Client();
     var uri = Uri.parse('http://api.clothestmatch.caillin.net/product/20');
     var response = await client.get(uri, headers: headers);
@@ -31,7 +28,7 @@ class BackendApi
         headerString = headerString.substring(0, headerString.indexOf(';'));
         sessionId = headerString;
       }
-      return response;
+      return response.body;
     }
     return null;
   }
